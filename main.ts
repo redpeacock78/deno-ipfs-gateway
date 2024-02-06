@@ -17,10 +17,9 @@ app.get(
   ): Promise<Response> => {
     if (c.req.param("IPFSPath") === "") return c.body(null, 400);
     let data: number[] | null = [];
-    let stream: AsyncIterable<Uint8Array> | null = create().cat(
-      c.req.param("IPFSPath")
-    );
+    let stream: AsyncIterable<Uint8Array> | null;
     try {
+      stream = create().cat(c.req.param("IPFSPath"));
       for await (const chunk of stream) {
         data.push(...chunk);
       }
