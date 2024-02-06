@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=kubo_binary /usr/local/bin/ipfs /usr/local/bin/ipfs
 COPY --from=deno_builder /app/proxy_app /app/proxy_app
 
-COPY ./scripts/entrypoint.sh /app/
+COPY ./entrypoint.sh /app/
 
 RUN chmod +x /app/entrypoint.sh
 
