@@ -1,5 +1,12 @@
-FROM ipfs/kubo:latest AS kubo_binary
-FROM denoland/deno:latest AS deno_builder
+FROM amd64/alpine:latest AS kubo_builder
+
+WORKDIR /app
+
+RUN apk add --no-cache aria2 tar && \
+  aria2c -s20 -j20 -x16 -k20M https://dist.ipfs.tech/kubo/v0.26.0/kubo_v0.26.0_linux-amd64.tar.gz && \
+  tar zxvf kubo_v0.26.0_linux-amd64.tar.gz
+
+FROM denoland/deno:alpine AS deno_builder
 
 WORKDIR /app
 
@@ -7,13 +14,13 @@ COPY ./main.ts /app/
 
 RUN deno compile -A -o proxy_app main.ts
 
-FROM amd64/alpine:latest
+FROM frolvlad/alpine-glibc:alpine-3.13
 
 ENV PORT="8000"
 
 WORKDIR /app
 
-COPY --from=kubo_binary /usr/local/bin/ipfs /usr/local/bin/ipfs
+COPY --from=kubo_builder /app/kubo/ipfs /usr/local/bin/ipfs
 COPY --from=deno_builder /app/proxy_app /app/proxy_app
 
 COPY ./entrypoint.sh /app/
