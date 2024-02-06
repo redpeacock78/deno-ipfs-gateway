@@ -7,7 +7,7 @@ WORKDIR /app
 
 RUN apk add --no-cache aria2 tar && \
   aria2c -s20 -j20 -x16 -k20M https://dist.ipfs.tech/kubo/v0.26.0/kubo_${version}_linux-${BUILDARCH}.tar.gz && \
-  tar zxvf kubo_v0.26.0_linux-amd64.tar.gz
+  tar zxvf kubo_${version}_linux-${BUILDARCH}4.tar.gz
 
 FROM denoland/deno:alpine AS deno_builder
 
