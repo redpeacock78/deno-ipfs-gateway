@@ -11,15 +11,19 @@ app.get(
 );
 
 app.get(
-  "/:IPFSPath",
+  "/:CID/*",
   async (
-    c: Context<Env, "/:IPFSPath", Record<string | number | symbol, never>>
+    c: Context<Env, "/:CID/*", Record<string | number | symbol, never>>
   ): Promise<Response> => {
-    if (c.req.param("IPFSPath") === "") return c.body(null, 400);
     let data: number[] | null = [];
     let stream: AsyncIterable<Uint8Array> | null;
     try {
-      stream = create().cat(c.req.param("IPFSPath"));
+      stream = create().cat(
+        `${c.req.param("CID")}/${c.req.path
+          .split("/")
+          .splice(2, 3)
+          .join("/")}`.replace(/\/$/, "")
+      );
       for await (const chunk of stream) {
         data.push(...chunk);
       }
