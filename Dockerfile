@@ -26,6 +26,7 @@ COPY --from=deno_builder /app/proxy_app /app/proxy_app
 
 COPY ./entrypoint.sh /app/
 
-RUN chmod +x /app/entrypoint.sh
+RUN apk add --no-cache curl && \
+  chmod +x /app/entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]
