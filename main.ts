@@ -1,8 +1,11 @@
 import { Hono, Context, Env } from "npm:hono";
+import { logger } from "npm:hono/logger";
 import { fileTypeFromBuffer, FileTypeResult } from "npm:file-type";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
 
 const app: Hono<Env, Record<string | number | symbol, never>, "/"> = new Hono();
+
+app.use("*", logger());
 
 app.get(
   "/",
@@ -18,12 +21,7 @@ app.get(
     let data: number[] | null = [];
     let stream: AsyncIterable<Uint8Array> | null;
     try {
-      stream = create().cat(
-        `${c.req.param("CID")}/${c.req.path
-          .split("/")
-          .splice(2, 3)
-          .join("/")}`.replace(/\/$/, "")
-      );
+      stream = create().cat(c.req.path.replace(/^\//, "").replace(/\/$/, ""));
       for await (const chunk of stream) {
         data.push(...chunk);
       }
