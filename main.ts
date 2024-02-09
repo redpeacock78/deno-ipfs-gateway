@@ -19,27 +19,33 @@ app.get(
     c: Context<Env, "/:CID/*", Record<string | number | symbol, never>>
   ): Promise<Response> => {
     let data: number[] | null = [];
+    let dataArray: Uint8Array | null;
     let stream: AsyncIterable<Uint8Array> | null;
     try {
-      stream = create().cat(c.req.path.replace(/^\//, "").replace(/\/$/, ""));
+      stream = create().cat(c.req.path.replace(/^\//, ""));
       for await (const chunk of stream) {
         data.push(...chunk);
       }
+      dataArray = new Uint8Array(data);
       const fileType: FileTypeResult | undefined = await fileTypeFromBuffer(
-        new Uint8Array(data)
+        dataArray
       );
-      return c.body(new Uint8Array(data), {
+      return c.body(dataArray, {
         status: 200,
         headers: {
-          "Content-Type": fileType!.mime,
+          ...(fileType?.mime ? { "Content-Type": fileType!.mime } : {}),
+          "Accept-Ranges": "bytes",
           "Cache-Control": "public, max-age=315360000",
+          "x-ipfs-path": c.req.path,
+          "x-ipfs-datasize": dataArray.length.toString(),
         },
       });
-    } catch (_e) {
-      return c.body(null, 404);
+    } catch (e) {
+      return c.body(e.response.statusText, e.response.status);
     } finally {
       stream = null;
       data = null;
+      dataArray = null;
     }
   }
 );
