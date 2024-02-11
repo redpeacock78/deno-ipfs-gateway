@@ -43,7 +43,10 @@ app.get(
         },
       });
     } catch (e) {
-      return c.body(e.response.statusText, e.response.status);
+      return c.body(
+        e.response?.statusText ? e.response.statusText : "",
+        e.response?.status ? e.response.status : 500
+      );
     } finally {
       stream = null;
       data = null;
