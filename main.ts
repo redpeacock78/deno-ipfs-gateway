@@ -1,10 +1,12 @@
 import { Hono, Context, Env } from "npm:hono";
+import { etag } from "npm:hono/etag";
 import { logger } from "npm:hono/logger";
 import { fileTypeFromBuffer, FileTypeResult } from "npm:file-type";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
 
 const app: Hono<Env, Record<string | number | symbol, never>, "/"> = new Hono();
 
+app.use("*", etag());
 app.use("*", logger());
 
 app.get(
