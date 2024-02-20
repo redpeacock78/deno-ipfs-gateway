@@ -24,10 +24,13 @@ tasks:
     cmd: docker-compose logs --follow
     desc: Show Service Log
   peers:
-    cmd: seq 1 ${NUM} | xargs -I@ docker exec deno-ipfs-gateway_ipfs_@ ipfs swarm peers | sort | uniq | wc -l
+    cmd: seq 1 ${NUM} | xargs -I@ docker exec $(basename $(pwd))_ipfs_@ ipfs swarm peers | sort | uniq | wc -l
     desc: Show connecting IPFS peers count
     env:
       NUM: 5
+  reload:
+    cmd: docker exec $(basename $(pwd))_nginx_1 nginx -s reload
+    desc: Reload Nginx config file
   conf:
     cmd: docker-compose config
     desc: Validate and view the Compose file
