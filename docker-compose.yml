@@ -1,0 +1,79 @@
+version: "3.8"
+services:
+  ipfs:
+    restart: always
+    build: .
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
+      start_period: "30s"
+      retries: 10
+      timeout: "10s"
+      interval: "5s"
+    ports:
+      - "8000"
+      - "4001"
+      - "4001/udp"
+      - "5001"
+    environment:
+      ALLOW_ORIGINS: "*"
+    labels:
+      - "autoheal=true"
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 3m
+
+  nginx:
+    restart: always
+    image: nginx
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"]
+      start_period: "30s"
+      retries: 10
+      timeout: "10s"
+      interval: "30s"
+    depends_on:
+      ipfs:
+        condition: service_healthy
+    volumes:
+      - .:/etc/nginx/conf.d
+    ports:
+      - "0.0.0.0:8000:80"
+    labels:
+      - "autoheal=true"
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 3m
+
+  tunnel:
+    restart: always
+    image: zoeyvid/cloudflared:latest
+    command: tunnel run
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9173/metrics || exit 1"]
+      start_period: "30s"
+      retries: 10
+      timeout: "10s"
+      interval: "30s"
+    depends_on:
+      nginx:
+        condition: service_healthy
+    labels:
+      - "autoheal=true"
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 3m
+
+  autoheal:
+    image: willfarrell/autoheal:latest
+    tty: true
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
