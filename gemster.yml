@@ -1,0 +1,33 @@
+---
+tasks:
+  up:
+    cmd: docker-compose up -d --scale ${TARGET}=${NUM}
+    desc: Service Running
+    env:
+      TARGET: ipfs
+      NUM: 5
+  build-up:
+    cmd: docker-compose up -d --build --scale ${TARGET}=${NUM}
+    desc: Container Building & Service Running
+    env:
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
+      TARGET: ipfs
+      NUM: 5
+  down:
+    cmd: docker-compose down --remove-orphans
+    desc: Service Down
+  ps:
+    cmd: docker-compose ps
+    desc: List Service containers
+  logs:
+    cmd: docker-compose logs --follow
+    desc: Show Service Log
+  peers:
+    cmd: seq 1 ${NUM} | xargs -I@ docker exec deno-ipfs-gateway_ipfs_@ ipfs swarm peers | sort | uniq | wc -l
+    desc: Show connecting IPFS peers count
+    env:
+      NUM: 5
+  conf:
+    cmd: docker-compose config
+    desc: Validate and view the Compose file
