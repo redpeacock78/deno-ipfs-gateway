@@ -24,7 +24,7 @@ tasks:
     cmd: docker-compose logs --follow
     desc: Show Service Log
   peers:
-    cmd: seq 1 ${NUM} | xargs -I@ docker-compose exec -T --index=@ ipfs ipfs swarm peers | sort | uniq | wc -l
+    cmd: seq 1 ${NUM} | xargs -P${NUM} -I@ docker-compose exec -T --index=@ ipfs ipfs swarm peers | sort | uniq | wc -l
     desc: Show connecting IPFS peers count
     env:
       NUM: 5
