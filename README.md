@@ -28,15 +28,15 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
             direction TB
             DI021[["Proxy<br>Port: 8000"]] --> |cat| DI022[["IPFS<br>Port: 4001,5001"]]
           end
-          subgraph DenoIPFSProxy03[📦 Deno IPFS Proxy]
+          subgraph DenoIPFSProxy03["📦 Deno IPFS Proxy"]
             direction TB
             DI031[["Proxy<br>Port: 8000"]] --> |cat| DI032[["IPFS<br>Port: 4001,5001"]]
           end
-          subgraph DenoIPFSProxy04[📦 Deno IPFS Proxy]
+          subgraph DenoIPFSProxy04["📦 Deno IPFS Proxy"]
             direction TB
             DI041[["Proxy<br>Port: 8000"]] --> |cat| DI042[["IPFS<br>Port: 4001,5001"]]
           end
-          subgraph DenoIPFSProxy05[📦 Deno IPFS Proxy]
+          subgraph DenoIPFSProxy05["📦 Deno IPFS Proxy"]
             direction TB
             DI051[["Proxy<br>Port: 8000"]] --> |cat| DI052[["IPFS<br>Port: 4001,5001"]]
           end
