@@ -24,18 +24,18 @@ tasks:
     cmd: docker-compose logs --follow
     desc: Show Service Log
   peers:
-    cmd: seq 1 ${NUM} | xargs -I@ docker exec $(basename $(pwd))_ipfs_@ ipfs swarm peers | sort | uniq | wc -l
+    cmd: seq 1 ${NUM} | xargs -I@ docker-compose exec -T --index=@ ipfs ipfs swarm peers | sort | uniq | wc -l
     desc: Show connecting IPFS peers count
     env:
       NUM: 5
   reload:
-    cmd: docker exec $(basename $(pwd))_nginx_1 nginx -s reload
+    cmd: docker-compose exec nginx nginx -s reload
     desc: Reload Nginx config file
   cache-size:
-    cmd: docker exec $(basename $(pwd))_nginx_1 du /var/cache/nginx | tac | awk 'NR>1{s+=$1}END{print s}' | numfmt --to=si
+    cmd: docker-compose exec -T nginx du /var/cache/nginx | tac | awk 'NR>1{s+=$1}END{print s}' | numfmt --to=si
     desc: Show Nginx total cache size
   cache-rm:
-    cmd: docker exec $(basename $(pwd))_nginx_1 sh -c 'rm -rf /var/cache/nginx/*'
+    cmd: docker-compose exec -T nginx sh -c 'rm -rf /var/cache/nginx/*'
     desc: Remove Nginx total cache
   conf:
     cmd: docker-compose config
