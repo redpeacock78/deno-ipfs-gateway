@@ -32,7 +32,7 @@ tasks:
     cmd: docker exec $(basename $(pwd))_nginx_1 nginx -s reload
     desc: Reload Nginx config file
   cache-size:
-    cmd: docker exec $(basename $(pwd))_nginx_1 du /var/cache/nginx | tac | awk 'NR>1{s+=$5}END{print s}' | numfmt --to=si
+    cmd: docker exec $(basename $(pwd))_nginx_1 du /var/cache/nginx | tac | awk 'NR>1{s+=$1}END{print s}' | numfmt --to=si
     desc: Show Nginx total cache size
   cache-rm:
     cmd: docker exec $(basename $(pwd))_nginx_1 sh -c 'rm -rf /var/cache/nginx/*'
