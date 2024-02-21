@@ -3,12 +3,12 @@
 ### Configuration Chart
 ```mermaid
 %% { init: { 'flowchart': { 'curve': 'liner' } } }%%
-flowchart LR
+flowchart TD
 subgraph CloudflareGroup["🌥 Cloudflare"]
   subgraph ZeroTrustGroup["Zero Trust"]
-    direction TB
     TU1{{"🚇 Tunnels"}}
-    AC1{{"🔐 Access"}} --> TU2{{"🚇 Tunnels"}}
+    AC1{{"🔐 Access"}}
+    TU2{{"🚇 Tunnels"}}
   end
 end
 
@@ -25,23 +25,23 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
           direction TB
           subgraph DenoIPFSProxy01["📦 Deno IPFS Proxy"]
             direction TB
-            DI011[["Proxy<br>Port: 8000"]] --> |cat| DI012[["IPFS<br>Port: 4001,5001"]]
+            DI011[["Proxy<br>Port: 8000"]] --> |cat| DI012[["IPFS<br>Port: 4001"]]
           end
           subgraph DenoIPFSProxy02["📦 Deno IPFS Proxy"]
             direction TB
-            DI021[["Proxy<br>Port: 8000"]] --> |cat| DI022[["IPFS<br>Port: 4001,5001"]]
+            DI021[["Proxy<br>Port: 8000"]] --> |cat| DI022[["IPFS<br>Port: 4001"]]
           end
           subgraph DenoIPFSProxy03["📦 Deno IPFS Proxy"]
             direction TB
-            DI031[["Proxy<br>Port: 8000"]] --> |cat| DI032[["IPFS<br>Port: 4001,5001"]]
+            DI031[["Proxy<br>Port: 8000"]] --> |cat| DI032[["IPFS<br>Port: 4001"]]
           end
           subgraph DenoIPFSProxy04["📦 Deno IPFS Proxy"]
             direction TB
-            DI041[["Proxy<br>Port: 8000"]] --> |cat| DI042[["IPFS<br>Port: 4001,5001"]]
+            DI041[["Proxy<br>Port: 8000"]] --> |cat| DI042[["IPFS<br>Port: 4001"]]
           end
           subgraph DenoIPFSProxy05["📦 Deno IPFS Proxy"]
             direction TB
-            DI051[["Proxy<br>Port: 8000"]] --> |cat| DI052[["IPFS<br>Port: 4001,5001"]]
+            DI051[["Proxy<br>Port: 8000"]] --> |cat| DI052[["IPFS<br>Port: 4001"]]
           end
         end
         NG1 --> |upstream| DenoIPFSProxyGroup
@@ -57,21 +57,25 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
       DO2 -.-> |autoheal=true| MainServiceGroup
     end
     Nginx <-.-> |/etc/nginx/conf.d| FS1[/"."/]
-    DO2 <-.-> |/var/run/docker.sock| FS2[/"/var/run/docker.sock"/]
-    DO4 <-.-> |/sys| FS3[/"/host/sys:ro"/]
-    DO4 <-.-> |/proc| FS4[/"/host/proc:ro"/]
+    DO2 <-.-> FS2[/"/var/run/docker.sock"/]
+    DO4 -.-> |/host/sys| FS3[/"/sys"/]
+    DO4 -.-> |/host/proc| FS4[/"/proc"/]
+    DO4 -.-> |/host/etc/passwd| FS5[/"/etc/passwd"/]
+    DO4 -.-> |/host/etc/group| FS6[/"/etc/group"/]
+    DO4 -.-> |/host/etc/os-release| FS7[/"/etc/os-release"/]
+    DO4 -.-> |/host/var/log/| FS8[/"/var/log"/]
+    DO4 -.-> FS2
   end
 end
 
-TU2 --> DO3
-OU1["👤 Admin"] --> AC1
-OU2["👤 Users"] --> TU1 --> DO1
+OU2["👤 Users"] --> TU1 ---> DO1
+OU1["👤 Admin"] --> AC1 --> TU2 --> DO3
 
 style CloudflareGroup fill-opacity:0,stroke:#ff6d37,stroke-width:5px
 style ZeroTrustGroup fill-opacity:0,stroke:#ff6d37,stroke-width:3px
 style OCIGroup fill-opacity:0,stroke:#53565a,stroke-width:5px
 style OCICompute fill-opacity:0,stroke:#53565a,stroke-width:4px
-style DockerGroup fill-opacity:0,stroke:#00f,stroke-width:3px
+style DockerGroup fill-opacity:0,stroke:#00f,stroke-dasharray:5 5,stroke-width:3px
 style MainServiceGroup fill-opacity:0,stroke:#ff4500,stroke-dasharray:5 5,stroke-width:2px
 style MoniterGroup fill-opacity:0,stroke:#228b22,stroke-dasharray:5 5,stroke-width:2px
 style DenoIPFSProxyGroup fill-opacity:0,stroke:#66cdaa,stroke-dasharray:5 5
