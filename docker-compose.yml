@@ -71,6 +71,51 @@ services:
         max-file: "1"
         max-size: 3m
 
+  netdata:
+    restart: always
+    image: titpetric/netdata
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:19999 || exit 1"]
+      start_period: "30s"
+      retries: 10
+      timeout: "10s"
+      interval: "30s"
+    volumes:
+      - /sys:/host/sys:ro
+      - /proc:/host/proc:ro
+    ports:
+      - "19999:19999"
+    labels:
+      - "autoheal=true"
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 3m
+
+  tunnel-netdata:
+    restart: always
+    image: zoeyvid/cloudflared:latest
+    command: tunnel run
+    environment:
+      TUNNEL_TOKEN: ${NETDATA_TUNNEL_TOKEN}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9173/metrics || exit 1"]
+      start_period: "30s"
+      retries: 10
+      timeout: "10s"
+      interval: "30s"
+    depends_on:
+      netdata:
+        condition: service_healthy
+    labels:
+      - "autoheal=true"
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 3m
+
   autoheal:
     image: willfarrell/autoheal:latest
     tty: true
