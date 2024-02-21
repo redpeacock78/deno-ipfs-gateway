@@ -10,10 +10,8 @@ services:
       timeout: "10s"
       interval: "5s"
     ports:
-      - "8000"
       - "4001"
       - "4001/udp"
-      - "5001"
     environment:
       ALLOW_ORIGINS: "*"
     labels:
@@ -38,8 +36,6 @@ services:
         condition: service_healthy
     volumes:
       - .:/etc/nginx/conf.d
-    ports:
-      - "0.0.0.0:8000:80"
     labels:
       - "autoheal=true"
     logging:
@@ -73,18 +69,27 @@ services:
 
   netdata:
     restart: always
-    image: titpetric/netdata
+    image: netdata/netdata
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:19999 || exit 1"]
       start_period: "30s"
       retries: 10
       timeout: "10s"
       interval: "30s"
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
     volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
       - /sys:/host/sys:ro
       - /proc:/host/proc:ro
-    ports:
-      - "19999:19999"
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "autoheal=true"
     logging:
