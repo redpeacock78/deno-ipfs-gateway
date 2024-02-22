@@ -58,13 +58,13 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
     end
     Nginx <-.-> |/etc/nginx/conf.d| FS1[/"."/]
     DO2 <-.-> FS2[/"/var/run/docker.sock"/]
+    DO4 -.-> FS2
     DO4 -.-> |/host/sys| FS3[/"/sys"/]
     DO4 -.-> |/host/proc| FS4[/"/proc"/]
     DO4 -.-> |/host/etc/passwd| FS5[/"/etc/passwd"/]
     DO4 -.-> |/host/etc/group| FS6[/"/etc/group"/]
     DO4 -.-> |/host/etc/os-release| FS7[/"/etc/os-release"/]
     DO4 -.-> |/host/var/log/| FS8[/"/var/log"/]
-    DO4 -.-> FS2
   end
 end
 
