@@ -52,7 +52,7 @@ NETDATA_TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
       - [ipfs](https://github.com/deno-libs/ipfs)
       - [file-type](https://www.npmjs.com/package/file-type)
     - [Kubo](https://github.com/ipfs/kubo)
-- Moniter Services
+- Monitor Services
   - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
   - Netdata([netdata/netdata](https://hub.docker.com/r/netdata/netdata))
 - Other Services
@@ -104,14 +104,14 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
         NG1 --> |upstream| DenoIPFSProxyGroup
         Nginx -.-> |service_healthy| DenoIPFSProxyGroup
       end
-      subgraph MoniterGroup["Moniter Services"]
+      subgraph MonitorGroup["Monitor Services"]
         DO2["📦 Cloudflared"] --> DO3["📦 Netdata<br>Port: 19999"]
       end
       subgraph OtherGroup["Other Services"]
         DO4["📦 Autoheal"]
       end
       DO4 -..-> |autoheal=true| MainServiceGroup
-      DO4 -..-> |autoheal=true| MoniterGroup
+      DO4 -..-> |autoheal=true| MonitorGroup
     end
     Nginx <-..-> |/etc/nginx/conf.d| FS1[/"📁 ."/]
     DO4 <-..-> FS2[/"📁 /var/run/docker.sock"/]
@@ -135,7 +135,7 @@ style OCIGroup fill-opacity:0,stroke:#53565a,stroke-width:5px
 style OCICompute fill-opacity:0,stroke:#53565a,stroke-width:4px
 style DockerGroup fill-opacity:0,stroke:#00f,stroke-dasharray:5 5,stroke-width:3px
 style MainServiceGroup fill-opacity:0,stroke:#ff4500,stroke-dasharray:5 5,stroke-width:2px
-style MoniterGroup fill-opacity:0,stroke:#228b22,stroke-dasharray:5 5,stroke-width:2px
+style MonitorGroup fill-opacity:0,stroke:#228b22,stroke-dasharray:5 5,stroke-width:2px
 style OtherGroup fill-opacity:0,stroke:#ffa500,stroke-dasharray:5 5,stroke-width:2px
 style DenoIPFSProxyGroup fill-opacity:0,stroke:#66cdaa,stroke-dasharray:5 5
 ```
