@@ -19,10 +19,9 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             repo="${HOME}/$(basename $(echo ${{ github.event.repository.url }}))"
-            echo ${repo}
             if [[ -e ${repo} ]]; then
               cd ${repo}
-              git pull ${repo}
+              git pull
             else
               git clone ${{ github.event.repository.url }}
               cd ${repo}
