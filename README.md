@@ -6,9 +6,10 @@
   - [Usage](#usage)
     - [Preparations](#preparations)
     - [Commands](#commands)
-  - [System Configurations](#system-configurations)
-  - [Configuration Chart](#configuration-chart)
-  - [Sequence Diagrams](#sequence-diagrams)
+  - [Designs](#designs)
+    - [System Configurations](#system-configurations)
+    - [Configuration Chart](#configuration-chart)
+    - [Sequence Diagrams](#sequence-diagrams)
 
 ### Require
 - [Docker](https://www.docker.com/)
@@ -40,24 +41,23 @@ NETDATA_TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
   $ gemster
   ```
 
-### System Configurations
-- Docker
-  - Main Services
-    - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
-    - Nginx([nginx](https://hub.docker.com/_/nginx))
-    - Deno IPFS Proxy([frolvlad/alpine-glibc](https://hub.docker.com/r/frolvlad/alpine-glibc/))
-      - [Deno](https://deno.com/)
-        - [Hono](https://hono.dev/)
-        - [ipfs](https://github.com/deno-libs/ipfs)
-        - [file-type](https://www.npmjs.com/package/file-type)
-      - [Kubo](https://github.com/ipfs/kubo)
-  - Moniter Services
-    - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
-    - Netdata([netdata/netdata](https://hub.docker.com/r/netdata/netdata))
-  - Other Services
-    - Autoheal([willfarrell/autoheal](https://hub.docker.com/r/willfarrell/autoheal))
-
-### Configuration Chart
+### Designs
+#### System Configurations
+- Main Services
+  - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
+  - Nginx([nginx](https://hub.docker.com/_/nginx))
+  - Deno IPFS Proxy([frolvlad/alpine-glibc](https://hub.docker.com/r/frolvlad/alpine-glibc/))
+    - [Deno](https://deno.com/)
+      - [Hono](https://hono.dev/)
+      - [ipfs](https://github.com/deno-libs/ipfs)
+      - [file-type](https://www.npmjs.com/package/file-type)
+    - [Kubo](https://github.com/ipfs/kubo)
+- Moniter Services
+  - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
+  - Netdata([netdata/netdata](https://hub.docker.com/r/netdata/netdata))
+- Other Services
+  - Autoheal([willfarrell/autoheal](https://hub.docker.com/r/willfarrell/autoheal))
+#### Configuration Chart
 ```mermaid
 %% { init: { 'flowchart': { 'curve': 'liner' } } }%%
 flowchart TD
@@ -139,8 +139,7 @@ style MoniterGroup fill-opacity:0,stroke:#228b22,stroke-dasharray:5 5,stroke-wid
 style OtherGroup fill-opacity:0,stroke:#ffa500,stroke-dasharray:5 5,stroke-width:2px
 style DenoIPFSProxyGroup fill-opacity:0,stroke:#66cdaa,stroke-dasharray:5 5
 ```
-
-### Sequence Diagrams
+#### Sequence Diagrams
 ```mermaid
 sequenceDiagram
     actor Users
