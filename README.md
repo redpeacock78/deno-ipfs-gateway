@@ -125,8 +125,10 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
   end
 end
 
+
 OU2["👤 Users"] --> TU1 ---> DO1
 OU1["👤 Admin"] --> AC1 --> TU2 --> DO2
+DenoIPFSProxyGroup ---> IPFSNetwork([IPFS Network])
 
 style CloudflareGroup fill-opacity:0,stroke:#ff6d37,stroke-width:5px
 style ZeroTrustGroup fill-opacity:0,stroke:#ff6d37,stroke-width:3px
