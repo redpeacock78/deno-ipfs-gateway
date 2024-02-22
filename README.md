@@ -80,3 +80,39 @@ style MainServiceGroup fill-opacity:0,stroke:#ff4500,stroke-dasharray:5 5,stroke
 style MoniterGroup fill-opacity:0,stroke:#228b22,stroke-dasharray:5 5,stroke-width:2px
 style DenoIPFSProxyGroup fill-opacity:0,stroke:#66cdaa,stroke-dasharray:5 5
 ```
+
+### Sequence Diagrams
+```mermaid
+sequenceDiagram
+    actor Users
+    Users ->> Cloudflare Tunnels: GET
+    Cloudflare Tunnels ->> cloudflared: GET
+    cloudflared ->> Nginx: GET
+    alt Cache Data Return
+      Nginx ->> Nginx: Cache Data Return
+      Nginx -->> cloudflared: Response
+      cloudflared -->> Cloudflare Tunnels: Response
+      Cloudflare Tunnels -->> Users: Response
+    end
+    Nginx ->> Proxy: GET
+    Proxy ->>+ IPFS API: Query Cat Endpoint of the IPFS API
+    alt Timeout Error
+      Nginx ->> Nginx: Timeout Error
+      Nginx -->> cloudflared: Timeout Error Redsponse
+      cloudflared -->> Cloudflare Tunnels: Timeout Error Response
+      Cloudflare Tunnels -->> Users: Timeout Error Response
+    end
+    Note over IPFS API: Get contents from IPFS Network
+    IPFS API -->> Proxy: Response
+    Proxy -->> Nginx: Response
+    Nginx -->> cloudflared: Response
+    cloudflared -->> Cloudflare Tunnels: Response
+    Cloudflare Tunnels -->> Users: Response
+    alt Error
+      IPFS API -->>- Proxy: Error Response
+      Proxy -->> Nginx: Error Response
+      Nginx -->> cloudflared: Error Redsponse
+      cloudflared -->> Cloudflare Tunnels: Error Response
+      Cloudflare Tunnels -->> Users: Error Response
+    end
+```
