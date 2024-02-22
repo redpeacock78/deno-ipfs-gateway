@@ -145,14 +145,14 @@ sequenceDiagram
     actor Users
     Users ->> Cloudflare Tunnels: GET
     Cloudflare Tunnels ->> cloudflared: GET
-    cloudflared ->> Nginx: GET
+    cloudflared ->>+ Nginx: GET
     alt Cache Data Return
       Nginx ->> Nginx: Cache Data Return
       Nginx -->> cloudflared: Response
       cloudflared -->> Cloudflare Tunnels: Response
       Cloudflare Tunnels -->> Users: Response
     end
-    Nginx ->> Proxy: GET
+    Nginx ->>+ Proxy: GET
     Proxy ->>+ IPFS API: Query Cat Endpoint of the IPFS API
     alt Timeout Error
       Nginx ->> Nginx: Timeout Error
@@ -168,8 +168,8 @@ sequenceDiagram
     Cloudflare Tunnels -->> Users: Response
     alt Error
       IPFS API -->>- Proxy: Error Response
-      Proxy -->> Nginx: Error Response
-      Nginx -->> cloudflared: Error Redsponse
+      Proxy -->>- Nginx: Error Response
+      Nginx -->>- cloudflared: Error Redsponse
       cloudflared -->> Cloudflare Tunnels: Error Response
       Cloudflare Tunnels -->> Users: Error Response
     end
