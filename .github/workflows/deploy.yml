@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            repo="${HOME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
+            if [[ -e ${repo} ]]; then
+              cd ${repo}
+              git pull ${repo}
+            else
+              git clone ${{ github.event.repository.url }}
+              cd ${repo}
+            fi
+            if type gemster > /dev/null 2>&1; then
+              gemster build-up
+            else
+              COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose up -d --build --scale ipfs=5
+            fi
