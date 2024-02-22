@@ -21,7 +21,7 @@ tasks:
     cmd: docker-compose ps
     desc: List Service containers
   top:
-    smd: docker-compose top
+    cmd: docker-compose top
     desc: Display the running processes
   logs:
     cmd: docker-compose logs --follow
