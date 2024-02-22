@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
   ipfs:
     restart: always
@@ -16,6 +16,8 @@ services:
       ALLOW_ORIGINS: "*"
     labels:
       - "autoheal=true"
+    profiles:
+      - main
     logging:
       driver: json-file
       options:
@@ -38,6 +40,8 @@ services:
       - .:/etc/nginx/conf.d
     labels:
       - "autoheal=true"
+    profiles:
+      - main
     logging:
       driver: json-file
       options:
@@ -61,6 +65,8 @@ services:
         condition: service_healthy
     labels:
       - "autoheal=true"
+    profiles:
+      - main
     logging:
       driver: json-file
       options:
@@ -92,6 +98,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "autoheal=true"
+    profiles:
+      - monitor
     logging:
       driver: json-file
       options:
@@ -115,6 +123,8 @@ services:
         condition: service_healthy
     labels:
       - "autoheal=true"
+    profiles:
+      - monitor
     logging:
       driver: json-file
       options:
@@ -127,6 +137,9 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    profiles:
+      - main
+      - monitor
     logging:
       driver: json-file
       options:
