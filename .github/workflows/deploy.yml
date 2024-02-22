@@ -19,6 +19,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             repo="${HOME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
+            echo ${repo}
             if [[ -e ${repo} ]]; then
               cd ${repo}
               git pull ${repo}
