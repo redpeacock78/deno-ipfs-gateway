@@ -32,7 +32,7 @@ tasks:
     env:
       NUM: 5
   reload:
-    cmd: docker-compose exec nginx nginx -s reload
+    cmd: docker-compose exec -T nginx nginx -s reload
     desc: Reload Nginx config file
   cache-size:
     cmd: docker-compose exec -T nginx du /var/cache/nginx | tac | awk 'NR>1{s+=$1}END{print s}' | numfmt --to=si --suffix=B
