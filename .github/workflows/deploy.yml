@@ -33,3 +33,11 @@ jobs:
               COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose up -d --build --scale ipfs=5 && \
               docker-compose exec nginx nginx -s reload
             fi
+      - name: Notification
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          username: Github Actions
+          avatar_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
