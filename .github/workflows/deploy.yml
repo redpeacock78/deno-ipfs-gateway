@@ -18,8 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            repo="${HOME}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
-            echo ${repo}
+            repo="${HOME}/$(basename $(echo ${{ github.event.repository.url }}))"
             if [[ -e ${repo} ]]; then
               cd ${repo}
               git pull ${repo}
