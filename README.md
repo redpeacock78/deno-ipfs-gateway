@@ -1,5 +1,52 @@
 ## deno-ipfs-gateway
 
+### Require
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Gemster](https://github.com/redpeacock78/gemster/tree/master) (Require [Crystal](https://crystal-lang.org/) >= 1.11.2)
+
+### Usage
+#### Preparations
+Create `.env` directly under the project and fill it in as follows
+```
+TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
+NETDATA_TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
+```
+#### Commands
+- Launch
+  ```bash
+  $ gemster up
+  ```
+- Image build and launch
+  ```bash
+  $ gemster build-up
+  ```
+- Termination
+  ```bash
+  $ gemster down
+  ```
+- Display of list of callable tasks
+  ```bash
+  $ gemster
+  ```
+
+### System Configurations
+- Docker
+  - Main Services
+    - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
+    - Nginx([nginx](https://hub.docker.com/_/nginx))
+    - Deno IPFS Proxy([frolvlad/alpine-glibc](https://hub.docker.com/r/frolvlad/alpine-glibc/))
+      - [Deno](https://deno.com/)
+        - [Hono](https://hono.dev/)
+        - [ipfs](https://github.com/deno-libs/ipfs)
+        - [file-type](https://www.npmjs.com/package/file-type)
+      - [Kubo](https://github.com/ipfs/kubo)
+  - Moniter Services
+    - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
+    - Netdata([netdata/netdata](https://hub.docker.com/r/netdata/netdata))
+  - Other Services
+    - Autoheal([willfarrell/autoheal](https://hub.docker.com/r/willfarrell/autoheal))
+
 ### Configuration Chart
 ```mermaid
 %% { init: { 'flowchart': { 'curve': 'liner' } } }%%
@@ -48,28 +95,28 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
         Nginx -.-> |service_healthy| DenoIPFSProxyGroup
       end
       subgraph MoniterGroup["Moniter Services"]
-        direction TB
-        DO2["📦 Autoheal"]
-        DO3["📦 Cloudflared"] --> DO4["📦 Netdata<br>Port: 19999"]
-        DO2 -.-> |autoheal=true| DO4
-        DO2 -.-> |autoheal=true| DO3
+        DO2["📦 Cloudflared"] --> DO3["📦 Netdata<br>Port: 19999"]
       end
-      DO2 -.-> |autoheal=true| MainServiceGroup
+      subgraph OtherGroup["Other Services"]
+        DO4["📦 Autoheal"]
+      end
+      DO4 -..-> |autoheal=true| MainServiceGroup
+      DO4 -..-> |autoheal=true| MoniterGroup
     end
-    Nginx <-.-> |/etc/nginx/conf.d| FS1[/"."/]
-    DO2 <-.-> FS2[/"/var/run/docker.sock"/]
-    DO4 -.-> FS2
-    DO4 -.-> |/host/sys| FS3[/"/sys"/]
-    DO4 -.-> |/host/proc| FS4[/"/proc"/]
-    DO4 -.-> |/host/etc/passwd| FS5[/"/etc/passwd"/]
-    DO4 -.-> |/host/etc/group| FS6[/"/etc/group"/]
-    DO4 -.-> |/host/etc/os-release| FS7[/"/etc/os-release"/]
-    DO4 -.-> |/host/var/log/| FS8[/"/var/log"/]
+    Nginx <-..-> |/etc/nginx/conf.d| FS1[/"📁 ."/]
+    DO4 <-..-> FS2[/"📁 /var/run/docker.sock"/]
+    DO3 -..-> FS2
+    DO3 -..-> |/host/sys| FS3[/"📁 /sys"/]
+    DO3 -..-> |/host/proc| FS4[/"📁 /proc"/]
+    DO3 -..-> |/host/etc/passwd| FS5[/"📁 /etc/passwd"/]
+    DO3 -..-> |/host/etc/group| FS6[/"📁 /etc/group"/]
+    DO3 -..-> |/host/etc/os-release| FS7[/"📁 /etc/os-release"/]
+    DO3 -..-> |/host/var/log/| FS8[/"📁 /var/log"/]
   end
 end
 
 OU2["👤 Users"] --> TU1 ---> DO1
-OU1["👤 Admin"] --> AC1 --> TU2 --> DO3
+OU1["👤 Admin"] --> AC1 --> TU2 --> DO2
 
 style CloudflareGroup fill-opacity:0,stroke:#ff6d37,stroke-width:5px
 style ZeroTrustGroup fill-opacity:0,stroke:#ff6d37,stroke-width:3px
@@ -78,6 +125,7 @@ style OCICompute fill-opacity:0,stroke:#53565a,stroke-width:4px
 style DockerGroup fill-opacity:0,stroke:#00f,stroke-dasharray:5 5,stroke-width:3px
 style MainServiceGroup fill-opacity:0,stroke:#ff4500,stroke-dasharray:5 5,stroke-width:2px
 style MoniterGroup fill-opacity:0,stroke:#228b22,stroke-dasharray:5 5,stroke-width:2px
+style OtherGroup fill-opacity:0,stroke:#ffa500,stroke-dasharray:5 5,stroke-width:2px
 style DenoIPFSProxyGroup fill-opacity:0,stroke:#66cdaa,stroke-dasharray:5 5
 ```
 
