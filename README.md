@@ -6,8 +6,8 @@
   - [Usage](#usage)
     - [Preparations](#preparations)
     - [Commands](#commands)
-  - [Designs](#designs)
-    - [System Configurations](#system-configurations)
+  - [System Designs](#system-designs)
+    - [Configurations](#configurations)
     - [Configuration Chart](#configuration-chart)
     - [Sequence Diagrams](#sequence-diagrams)
 
@@ -41,8 +41,8 @@ NETDATA_TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
   $ gemster
   ```
 
-### Designs
-#### System Configurations
+### System Designs
+#### Configurations
 - Main Services
   - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
   - Nginx([nginx](https://hub.docker.com/_/nginx))
