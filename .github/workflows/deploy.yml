@@ -23,6 +23,7 @@ jobs:
               cd ${repo} && \
               git pull
             else
+              cd ${HOME} && \
               git clone ${{ github.event.repository.url }} && \
               cd ${repo}
             fi
@@ -31,7 +32,7 @@ jobs:
               gemster reload && \
               yes | docker builder prune
             else
-              COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 COMPOSE_PROFILES: main,monitor docker-compose up -d --build --scale ipfs=5 && \
+              COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 COMPOSE_PROFILES=main,monitor docker-compose up -d --build --scale ipfs=5 && \
               docker-compose exec nginx nginx -s reload && \
               yes | docker builder prune
             fi
