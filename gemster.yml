@@ -4,6 +4,7 @@ tasks:
     cmd: docker-compose up -d --scale ${TARGET}=${NUM}
     desc: Service Running
     env:
+      COMPOSE_PROFILES: main,monitor
       TARGET: ipfs
       NUM: 5
   build-up:
@@ -12,6 +13,7 @@ tasks:
     env:
       COMPOSE_DOCKER_CLI_BUILD: 1
       DOCKER_BUILDKIT: 1
+      COMPOSE_PROFILES: main,monitor
       TARGET: ipfs
       NUM: 5
   down:
