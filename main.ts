@@ -58,7 +58,7 @@ app.get(
       });
     } catch (e) {
       return c.body(
-        e.response?.statusText ? e.response.statusText : "",
+        e.response?.statusText ? e.response.statusText : null,
         e.response?.status ? e.response.status : 500
       );
     } finally {
