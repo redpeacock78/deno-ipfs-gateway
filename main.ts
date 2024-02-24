@@ -2,6 +2,7 @@ import { Hono, Context, Env } from "npm:hono";
 import { etag } from "npm:hono/etag";
 import { logger } from "npm:hono/logger";
 import { Magika } from "npm:magika@0.2.5";
+import mime from "npm:mime";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
 
 const modelURL = "https://google.github.io/magika/model/model.json";
@@ -38,7 +39,7 @@ app.get(
       return c.body(dataArray, {
         status: 200,
         headers: {
-          "Content-Type": fileType.label,
+          "Content-Type": mime.getType(fileType.label),
           "Accept-Ranges": "bytes",
           "Cache-Control": "public, max-age=315360000",
           Etag: `"${c.req.param("CID")}"`,
