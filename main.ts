@@ -57,7 +57,6 @@ app.get(
         },
       });
     } catch (e) {
-      console.error(e);
       return c.body(
         e.response?.statusText ? e.response.statusText : "",
         e.response?.status ? e.response.status : 500
