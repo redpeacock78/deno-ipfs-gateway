@@ -36,10 +36,11 @@ app.get(
       }
       dataArray = new Uint8Array(data);
       const fileType = await magika.identifyBytes(dataArray);
+      const mimeType: string | null = mime.getType(fileType.label);
       return c.body(dataArray, {
         status: 200,
         headers: {
-          "Content-Type": mime.getType(fileType.label) as string,
+          ...(mimeType ? { "Content-Type": mimeType } : {}),
           "Accept-Ranges": "bytes",
           "Cache-Control": "public, max-age=315360000",
           Etag: `"${c.req.param("CID")}"`,
