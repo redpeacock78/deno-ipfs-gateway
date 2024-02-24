@@ -1,15 +1,14 @@
-## deno-ipfs-gateway
+## deno-ipfs-gateway <!-- omit in toc -->
 
 ### TOC <!-- omit in toc -->
-- [deno-ipfs-gateway](#deno-ipfs-gateway)
-  - [Require](#require)
-  - [Usage](#usage)
-    - [Preparations](#preparations)
-    - [Commands](#commands)
-  - [System Designs](#system-designs)
-    - [Configurations](#configurations)
-    - [Configuration Chart](#configuration-chart)
-    - [Sequence Diagrams](#sequence-diagrams)
+- [Require](#require)
+- [Usage](#usage)
+  - [Preparations](#preparations)
+  - [Commands](#commands)
+- [System Designs](#system-designs)
+  - [Configurations](#configurations)
+  - [Configuration Chart](#configuration-chart)
+  - [Sequence Diagrams](#sequence-diagrams)
 
 ### Require
 - [Docker](https://www.docker.com/)
