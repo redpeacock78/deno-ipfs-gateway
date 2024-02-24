@@ -1,8 +1,9 @@
-import { Hono, Context, Env } from "npm:hono";
+import mime from "npm:mime";
 import { etag } from "npm:hono/etag";
 import { logger } from "npm:hono/logger";
 import { Magika } from "npm:magika@0.2.5";
-import mime from "npm:mime";
+import { Hono, Context, Env } from "npm:hono";
+import { fileTypeFromBuffer, FileTypeResult } from "npm:file-type";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
 
 const magika = new Magika();
@@ -24,17 +25,26 @@ app.get(
   async (
     c: Context<Env, "/:CID/*", Record<string | number | symbol, never>>
   ): Promise<Response> => {
+    type identifyBytesObject = {
+      label: string;
+      score: number;
+    };
     let data: number[] | null = [];
     let dataArray: Uint8Array | null;
     let stream: AsyncIterable<Uint8Array> | null;
+    let identify: identifyBytesObject | FileTypeResult | null;
     try {
       stream = create().cat(c.req.path.replace(/^\//, ""));
       for await (const chunk of stream) {
         data.push(...chunk);
       }
       dataArray = new Uint8Array(data);
-      const fileType = await magika.identifyBytes(dataArray);
-      const mimeType: string | null = mime.getType(fileType.label);
+      identify = (await magika.identifyBytes(dataArray)) as identifyBytesObject;
+      let mimeType: string | null = mime.getType(identify.label);
+      if (!mimeType) {
+        identify = (await fileTypeFromBuffer(dataArray)) as FileTypeResult;
+        mimeType = identify.mime;
+      }
       return c.body(dataArray, {
         status: 200,
         headers: {
@@ -56,6 +66,7 @@ app.get(
       stream = null;
       data = null;
       dataArray = null;
+      identify = null;
     }
   }
 );
