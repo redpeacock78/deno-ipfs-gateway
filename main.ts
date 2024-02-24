@@ -5,10 +5,8 @@ import { Magika } from "npm:magika@0.2.5";
 import mime from "npm:mime";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
 
-const modelURL = "https://google.github.io/magika/model/model.json";
-const configURL = "https://google.github.io/magika/model/config.json";
 const magika = new Magika();
-await magika.load(modelURL, configURL);
+await magika.load({});
 
 const app: Hono<Env, Record<string | number | symbol, never>, "/"> = new Hono();
 
