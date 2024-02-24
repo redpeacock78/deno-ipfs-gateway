@@ -49,7 +49,8 @@ NETDATA_TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
     - [Deno](https://deno.com/)
       - [Hono](https://hono.dev/)
       - [ipfs](https://github.com/deno-libs/ipfs)
-      - [file-type](https://www.npmjs.com/package/file-type)
+      - [magika](https://www.npmjs.com/package/magika)
+      - [mime](https://www.npmjs.com/package/mime)
     - [Kubo](https://github.com/ipfs/kubo)
 - Monitor Services
   - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
