@@ -1,8 +1,13 @@
 import { Hono, Context, Env } from "npm:hono";
 import { etag } from "npm:hono/etag";
 import { logger } from "npm:hono/logger";
-import { fileTypeFromBuffer, FileTypeResult } from "npm:file-type";
+import { Magika } from "npm:magika@0.2.5";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
+
+const modelURL = "https://google.github.io/magika/model/model.json";
+const configURL = "https://google.github.io/magika/model/config.json";
+const magika = new Magika();
+await magika.load(modelURL, configURL);
 
 const app: Hono<Env, Record<string | number | symbol, never>, "/"> = new Hono();
 
@@ -29,13 +34,11 @@ app.get(
         data.push(...chunk);
       }
       dataArray = new Uint8Array(data);
-      const fileType: FileTypeResult | undefined = await fileTypeFromBuffer(
-        dataArray
-      );
+      const fileType = await magika.identifyBytes(dataArray);
       return c.body(dataArray, {
         status: 200,
         headers: {
-          ...(fileType?.mime ? { "Content-Type": fileType!.mime } : {}),
+          "Content-Type": fileType.label,
           "Accept-Ranges": "bytes",
           "Cache-Control": "public, max-age=315360000",
           Etag: `"${c.req.param("CID")}"`,
@@ -44,6 +47,7 @@ app.get(
         },
       });
     } catch (e) {
+      console.error(e);
       return c.body(
         e.response?.statusText ? e.response.statusText : "",
         e.response?.status ? e.response.status : 500
