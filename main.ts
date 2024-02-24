@@ -39,7 +39,7 @@ app.get(
       return c.body(dataArray, {
         status: 200,
         headers: {
-          "Content-Type": mime.getType(fileType.label),
+          "Content-Type": mime.getType(fileType.label) as string,
           "Accept-Ranges": "bytes",
           "Cache-Control": "public, max-age=315360000",
           Etag: `"${c.req.param("CID")}"`,
