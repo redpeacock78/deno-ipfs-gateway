@@ -1,13 +1,23 @@
-import mime from "npm:mime";
-import { etag } from "npm:hono/etag";
-import { logger } from "npm:hono/logger";
-import { Magika } from "npm:magika@0.2.5";
-import { Hono, Context, Env } from "npm:hono";
-import { fileTypeFromBuffer, FileTypeResult } from "npm:file-type";
-import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
+import {
+  Hono,
+  Context,
+  Env,
+  etag,
+  logger,
+  create,
+  Magika,
+  Mime,
+  standardTypes,
+  otherTypes,
+  magikaLabelsTypes,
+  fileTypeFromBuffer,
+  FileTypeResult,
+} from "./deps.ts";
 
 const magika = new Magika();
 await magika.load({});
+const mime = new Mime(standardTypes, otherTypes);
+mime.define(magikaLabelsTypes, true);
 
 const app: Hono<Env, Record<string | number | symbol, never>, "/"> = new Hono();
 
