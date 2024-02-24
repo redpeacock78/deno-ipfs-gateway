@@ -13,7 +13,7 @@ FROM denoland/deno:alpine-1.40.4 AS deno_builder
 
 WORKDIR /app
 
-COPY ./main.ts /app/
+COPY ./ /app/
 
 RUN deno compile -A -o proxy_app main.ts
 
