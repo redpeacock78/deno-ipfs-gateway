@@ -55,10 +55,18 @@ app.get(
         identify = (await fileTypeFromBuffer(dataArray)) as FileTypeResult;
         mimeType = identify.mime;
       }
+      const filename: string | null = c.req.query("filename")
+        ? encodeURIComponent(c.req.query("filename") as string)
+        : null;
       return c.body(dataArray, {
         status: 200,
         headers: {
           ...(mimeType ? { "Content-Type": mimeType } : {}),
+          ...(filename
+            ? {
+                "Content-Disposition": `inline; filename*=utf-8''${filename}`,
+              }
+            : {}),
           "Accept-Ranges": "bytes",
           "Cache-Control": "public, max-age=315360000",
           Etag: `"${c.req.param("CID")}"`,
