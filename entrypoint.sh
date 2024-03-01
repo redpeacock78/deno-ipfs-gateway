@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DOCKER_SCALE_NUM="$(curl -s --unix-socket /run/docker.sock "http://docker/containers/${HOSTNAME}/json" | jq -r .Name | cut -d _ -f 3)"
-IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM:-0}"
+IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM:-1}"
 
 mkdir -p "${IPFS_DIR}"
 ln -s "${IPFS_DIR}" /root/.ipfs
