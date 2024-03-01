@@ -33,11 +33,16 @@ tasks:
     desc: Show connecting IPFS peers count
     env:
       NUM: 5
+  contents-size:
+    cmd: seq 1 ${NUM} | xargs -P${NUM} -I@ docker-compose exec -T --index=@ ipfs sh -c 'du -b /ipfs/@ | tac | head -n1' | awk '{s+=$1}END{print s}' | numfmt --to=si --suffix=B
+    desc: Show IPFS contents total cache size
+    env:
+      NUM: 5
   reload:
     cmd: docker-compose exec -T nginx nginx -s reload
     desc: Reload Nginx config file
   cache-size:
-    cmd: docker-compose exec -T nginx du /var/cache/nginx | tac | awk 'NR>1{s+=$1}END{print s}' | numfmt --to=si --suffix=B
+    cmd: docker-compose exec -T nginx du -b /var/cache/nginx | tac | awk 'NR>1{s+=$1}END{print s}' | numfmt --to=si --suffix=B
     desc: Show Nginx total cache size
   cache-rm:
     cmd: docker-compose exec -T nginx sh -c 'rm -rf /var/cache/nginx/*'
