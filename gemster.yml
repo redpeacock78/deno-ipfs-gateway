@@ -48,7 +48,7 @@ tasks:
     cmd: docker-compose exec -T nginx sh -c 'rm -rf /var/cache/nginx/*'
     desc: Remove Nginx total cache
   total-size:
-    cmd: echo -e "$(gemster contents-size | tail -n1 | tr -d B | numfmt --from=si)\n$(gemster cache-size | tail -n1 | tr -d B | numfmt --from=si)" | awk '{s+=$1}END{print s}' | numfmt --to=si --suffix=B
+    cmd: echo "$(gemster contents-size | tail -n1 | tr -d B | numfmt --from=si)\n$(gemster cache-size | tail -n1 | tr -d B | numfmt --from=si)" | awk '{s+=$1}END{print s}' | numfmt --to=si --suffix=B
     desc: Show total cache size
     env:
       NUM: 5
