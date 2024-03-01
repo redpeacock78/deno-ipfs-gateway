@@ -13,7 +13,7 @@
 
 ### Demo
 - QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E
-  <video controls playsinline src="https://ipfs.shwt.pp.ua/QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E?filename=sm2523436_00001.mp4" type="video/mp4" alt="Demo Video" />
+  <div><video controls src="https://ipfs.shwt.pp.ua/QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E?filename=sm2523436_00001.mp4" muted="false"></video></div>
 
 ### Require
 - [Docker](https://www.docker.com/)
