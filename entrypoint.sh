@@ -1,5 +1,11 @@
 #!/bin/sh
 
+DOCKER_SCALE_NUM=$(curl -s --unix-socket /run/docker.sock "http://docker/containers/${HOSTNAME}/json" | jq -r .Name | cut -d "-" -f 4)
+IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM:-0}"
+
+mkdir -p "${IPFS_DIR}"
+ln -s "${IPFS_DIR}" /root/.ipfs
+
 ALLOW_ORIGINS="${ALLOW_ORIGINS:?ALLOW_ORIGINS is required}"
 
 [ -z "${ALLOW_ORIGINS}" ] && echo "ALLOW_ORIGINS is required" && exit 1
