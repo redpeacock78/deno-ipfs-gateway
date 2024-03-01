@@ -1,8 +1,8 @@
 ./.github/*
 ./.ipfs/*
 ./.nginx/*
+./conf/*
 .gitignore
 Dockerfile
 docker-compose.yml
-nginx.conf
 README.md
