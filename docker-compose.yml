@@ -40,7 +40,7 @@ services:
       ipfs:
         condition: service_healthy
     volumes:
-      - .:/etc/nginx/conf.d
+      - ./conf:/etc/nginx/conf.d
       - ./.nginx:/var/cache/nginx
     labels:
       - "autoheal=true"
