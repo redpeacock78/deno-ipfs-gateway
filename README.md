@@ -45,7 +45,7 @@ NETDATA_TUNNEL_TOKEN="List your Cloudflare Tunnels key here"
 - Main Services
   - cloudflared([zoeyvid/cloudflared](https://hub.docker.com/r/zoeyvid/cloudflared))
   - Nginx([nginx](https://hub.docker.com/_/nginx))
-  - Deno IPFS Proxy([frolvlad/alpine-glibc](https://hub.docker.com/r/frolvlad/alpine-glibc/))
+  - Deno IPFS Proxy(Base: [alpine](https://hub.docker.com/_/alpine), Build: [alpine](https://hub.docker.com/_/alpine) / [gcr.io/distroless/cc]("https://github.com/GoogleContainerTools/distroless/blob/main/cc/README.md") / [denoland/deno]("https://hub.docker.com/r/denoland/deno/"))
     - [Deno](https://deno.com/)
       - [Hono](https://hono.dev/)
       - [ipfs](https://github.com/deno-libs/ipfs)
