@@ -12,6 +12,9 @@ services:
     ports:
       - "4001"
       - "4001/udp"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./.ipfs:/ipfs
     environment:
       ALLOW_ORIGINS: "*"
     labels:
@@ -38,6 +41,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/etc/nginx/conf.d
+      - ./.nginx:/var/cache/nginx
     labels:
       - "autoheal=true"
     profiles:
