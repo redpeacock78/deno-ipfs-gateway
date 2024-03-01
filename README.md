@@ -114,15 +114,18 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
       DO4 -..-> |autoheal=true| MainServiceGroup
       DO4 -..-> |autoheal=true| MonitorGroup
     end
-    Nginx <-..-> |/etc/nginx/conf.d| FS1[/"📁 ."/]
-    DO4 <-..-> FS2[/"📁 /var/run/docker.sock"/]
-    DO3 -..-> FS2
-    DO3 -..-> |/host/sys| FS3[/"📁 /sys"/]
-    DO3 -..-> |/host/proc| FS4[/"📁 /proc"/]
-    DO3 -..-> |/host/etc/passwd| FS5[/"📁 /etc/passwd"/]
-    DO3 -..-> |/host/etc/group| FS6[/"📁 /etc/group"/]
-    DO3 -..-> |/host/etc/os-release| FS7[/"📁 /etc/os-release"/]
-    DO3 -..-> |/host/var/log/| FS8[/"📁 /var/log"/]
+    Nginx <-..-> |/etc/nginx/conf.d| FS1[/"📁 ./conf"/]
+    Nginx <-..-> |/var/cache/nginx/| FS2[/"📁 ./nginx"/]
+    DO4 <-..-> FS3[/"📁 /var/run/docker.sock"/]
+    DO3 -..-> FS3
+    DO3 -..-> |/host/sys| FS4[/"📁 /sys"/]
+    DO3 -..-> |/host/proc| FS5[/"📁 /proc"/]
+    DO3 -..-> |/host/etc/passwd| FS6[/"📁 /etc/passwd"/]
+    DO3 -..-> |/host/etc/group| FS7[/"📁 /etc/group"/]
+    DO3 -..-> |/host/etc/os-release| FS8[/"📁 /etc/os-release"/]
+    DO3 -..-> |/host/var/log/| FS9[/"📁 /var/log"/]
+    DenoIPFSProxyGroup <-.-> |/ipfs| FS10[/"📁 ./.ipfs"/]
+    DenoIPFSProxyGroup <-.-> FS3
   end
 end
 
