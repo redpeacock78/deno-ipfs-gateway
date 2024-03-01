@@ -1,0 +1,8 @@
+./.github/*
+./.ipfs/*
+./.nginx/*
+.gitignore
+Dockerfile
+docker-compose.yml
+nginx.conf
+README.md
