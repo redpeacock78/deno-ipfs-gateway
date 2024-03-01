@@ -1,7 +1,7 @@
 ## deno-ipfs-gateway <!-- omit in toc -->
 
 ### TOC <!-- omit in toc -->
-- [Demo](#demo)
+- [Demo movie file](#demo-movie-file)
 - [Require](#require)
 - [Usage](#usage)
   - [Preparations](#preparations)
@@ -11,9 +11,8 @@
   - [Configuration Chart](#configuration-chart)
   - [Sequence Diagrams](#sequence-diagrams)
 
-### Demo
-- QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E
-  <div><video controls src="https://ipfs.shwt.pp.ua/QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E?filename=sm2523436_00001.mp4" muted="false"></video></div>
+### Demo movie file
+- [QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E](https://ipfs.shwt.pp.ua/QmTSpRPBpQnJtBETq9zckK2KgPTdEGR32jjMk8EtuJCw4E?filename=sm2523436_00001.mp4)
 
 ### Require
 - [Docker](https://www.docker.com/)
