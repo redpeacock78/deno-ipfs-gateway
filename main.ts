@@ -82,8 +82,14 @@ app.get(
                   }
                 : {}),
               "Accept-Ranges": "bytes",
+              "Access-Control-Allow-Origin": "*",
               "Cache-Control": "public, max-age=315360000",
-              Etag: `"${c.req.param("CID" as never)}"`,
+              Etag: `"${
+                c.req.path
+                  .replace(/^\/ipfs\//, "")
+                  .replace(/^\//, "")
+                  .split("/")[0]
+              }"`,
               "X-Ipfs-Path": c.req.path,
               "X-Ipfs-Datasize": dataArray.length.toString(),
             },
