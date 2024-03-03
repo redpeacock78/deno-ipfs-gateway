@@ -12,7 +12,7 @@ ALLOW_ORIGINS="${ALLOW_ORIGINS:?ALLOW_ORIGINS is required}"
 
 echo "Starting IPFS Gateway..."
 ipfs init
-ipfs daemon &
+ipfs daemon --enable-gc &
 sleep 3
 
 echo "IPFS Gateway is ready!"
