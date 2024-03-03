@@ -12,14 +12,16 @@ ALLOW_ORIGINS="${ALLOW_ORIGINS:?ALLOW_ORIGINS is required}"
 
 echo "Starting IPFS Gateway..."
 ipfs init
+
+ipfs config Swarm.ConnMgr.Type "none"
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"${ALLOWGINS}\"]"
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"HEAD\", \"GET\", \"OPTIONS\"]"
+ipfs config --json Datastore.StorageMax '"4GB"'
+
 ipfs daemon --enable-gc &
 sleep 3
 
 echo "IPFS Gateway is ready!"
-
-ipfs config Swarm.ConnMgr.Type "none"
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"${ALLOW_ORIGINS}\"]"
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"HEAD\", \"GET\", \"OPTIONS\"]"
 
 echo "Starting server..."
 
