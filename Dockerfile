@@ -29,8 +29,8 @@ COPY --from=kubo /app/kubo/ipfs /usr/local/bin/ipfs
 COPY --from=deno /app/proxy_app /app/proxy_app
 COPY ./entrypoint.sh /app/
 
-RUN mkdir /lib64 \
-  && ln -s /usr/local/lib/ld-linux-* /lib64/ && \
+RUN mkdir /lib64 && \
+  ln -s /usr/local/lib/ld-linux-* /lib64/ && \
   apk add --no-cache curl jq && \
   chmod +x /app/entrypoint.sh
 
