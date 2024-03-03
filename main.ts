@@ -28,7 +28,10 @@ app.use("*", logger());
 app.get(
   "/",
   (c: Context<Env, "/", Record<string | number | symbol, never>>): Response =>
-    c.text("OK!")
+    c.text("OK!", 200, {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    })
 );
 
 ["/:CID/*", "/ipfs/:CID/*"].forEach(
