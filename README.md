@@ -129,7 +129,7 @@ subgraph OCIGroup["🌥 Oracle Cloud Infrastracrure"]
     DO3 -..-> |/host/etc/os-release| FS8[/"📁 /etc/os-release"/]
     DO3 -..-> |/host/var/log/| FS9[/"📁 /var/log"/]
     DenoIPFSProxyGroup <-.-> |/ipfs| FS10[/"📁 ./.ipfs"/]
-    DenoIPFSProxyGroup <-.-> FS3
+    DenoIPFSProxyGroup -.-> FS3
   end
 end
 
