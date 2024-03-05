@@ -1,14 +1,27 @@
-import { Mime } from "npm:mime";
-export { etag } from "npm:hono/etag";
-export { logger } from "npm:hono/logger";
-export { Magika } from "npm:magika@0.2.5";
-export { Hono } from "npm:hono";
-import { Context, Env, ToSchema } from "npm:hono";
-import otherTypes from "npm:mime/types/other.js";
-import standardTypes from "npm:mime/types/standard.js";
+import { Mime } from "npm:mime@4.0.1";
+import { Magika } from "npm:magika@0.2.6";
+import { FileTypeResult } from "npm:file-type@19.0.0";
+import { fileTypeFromBuffer } from "npm:file-type@19.0.0";
+import otherTypes from "npm:mime@4.0.1/types/other.js";
+import standardTypes from "npm:mime@4.0.1/types/standard.js";
 import magikaLabelsTypes from "./types/magikaLabelsTypes.ts";
-export { fileTypeFromBuffer } from "npm:file-type";
-import { FileTypeResult } from "npm:file-type";
-export { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
-export { Mime, standardTypes, otherTypes, magikaLabelsTypes };
+import { Hono, Context } from "https://deno.land/x/hono@v4.1.0-rc.1/mod.ts";
+import { Env, ToSchema } from "https://deno.land/x/hono@v4.1.0-rc.1/types.ts";
+import {
+  etag,
+  logger,
+} from "https://deno.land/x/hono@v4.1.0-rc.1/middleware.ts";
+import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
+export {
+  Hono,
+  Mime,
+  Magika,
+  etag,
+  logger,
+  create,
+  fileTypeFromBuffer,
+  standardTypes,
+  otherTypes,
+  magikaLabelsTypes,
+};
 export type { Context, Env, ToSchema, FileTypeResult };
