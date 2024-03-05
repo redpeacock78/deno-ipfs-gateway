@@ -16,7 +16,7 @@ ipfs init
 ipfs config Swarm.ConnMgr.Type "none"
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"${ALLOWGINS}\"]"
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"HEAD\", \"GET\", \"OPTIONS\"]"
-ipfs config --json Datastore.StorageMax '"4GB"'
+ipfs config --json Datastore.StorageMax '"2GB"'
 
 ipfs daemon --enable-gc &
 sleep 3
