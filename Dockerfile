@@ -16,7 +16,8 @@ FROM denoland/deno:alpine-1.41.0 AS deno
 
 WORKDIR /app
 
-COPY ./ /app/
+COPY ./*.ts /app/
+COPY ./types/* /app/types/
 
 RUN deno compile -A -o proxy_app main.ts
 
