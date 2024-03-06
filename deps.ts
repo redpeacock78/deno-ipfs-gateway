@@ -12,6 +12,8 @@ import {
   logger,
 } from "https://deno.land/x/hono@v4.1.0-rc.1/middleware.ts";
 import { create } from "https://deno.land/x/ipfs@0.4.0-wip.6/mod.ts";
+
+export type { Context, Env, ToSchema, FileTypeResult };
 export {
   Hono,
   Mime,
@@ -24,4 +26,3 @@ export {
   otherTypes,
   magikaLabelsTypes,
 };
-export type { Context, Env, ToSchema, FileTypeResult };
