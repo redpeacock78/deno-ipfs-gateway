@@ -28,6 +28,9 @@ tasks:
   logs:
     cmd: docker-compose logs --follow
     desc: Show Service Log
+  stats:
+    cmd: docker-compose ps -q | xargs docker stats
+    desc: Display a live stream of container(s) resource usage statistics
   peers:
     cmd: seq 1 ${NUM} | xargs -P${NUM} -I@ docker-compose exec -T --index=@ ipfs ipfs swarm peers | sort | uniq | wc -l
     desc: Show connecting IPFS peers count
