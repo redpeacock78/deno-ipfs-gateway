@@ -87,11 +87,11 @@ app.get(
               "Cache-Control": "public, max-age=315360000",
               Etag: `"${
                 c.req.path
-                  .replace(/^\/ipfs\//, "")
+                  .replace(/^\/ipfs\//, "/")
                   .replace(/^\//, "")
                   .split("/")[0]
               }"`,
-              "X-Ipfs-Path": c.req.path.replace(/^\/ipfs/, ""),
+              "X-Ipfs-Path": c.req.path.replace(/^\/ipfs\//, "/"),
               "X-Ipfs-Datasize": dataArray.length.toString(),
             },
           });
