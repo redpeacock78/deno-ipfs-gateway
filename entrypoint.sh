@@ -4,7 +4,7 @@ DOCKER_SCALE_NUM="$(curl -s --unix-socket /run/docker.sock "http://docker/contai
 IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM:-1}"
 
 mkdir -p "${IPFS_DIR}"
-ln -s "${IPFS_DIR}" /root/.ipfs
+ln -s "${IPFS_DIR}" /root/.ipfs >/dev/null 2>&1
 
 ALLOW_ORIGINS="${ALLOW_ORIGINS:?ALLOW_ORIGINS is required}"
 
