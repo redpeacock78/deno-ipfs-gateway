@@ -91,7 +91,7 @@ app.get(
                   .replace(/^\//, "")
                   .split("/")[0]
               }"`,
-              "X-Ipfs-Path": c.req.path,
+              "X-Ipfs-Path": c.req.path.replace(/^\/ipfs/, ""),
               "X-Ipfs-Datasize": dataArray.length.toString(),
             },
           });
