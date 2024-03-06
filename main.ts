@@ -3,7 +3,6 @@ import {
   Context,
   Env,
   ToSchema,
-  etag,
   logger,
   create,
   Magika,
@@ -22,7 +21,6 @@ mime.define(magikaLabelsTypes, true);
 
 const app: Hono<Env, Record<string | number | symbol, never>, "/"> = new Hono();
 
-app.use("*", etag());
 app.use("*", logger());
 
 app.get(
