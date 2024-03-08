@@ -1,25 +1,19 @@
 #!/bin/sh
 
+ALLOW_ORIGINS="${ALLOW_ORIGINS:?ALLOW_ORIGINS is required}"
+[ -z "${ALLOW_ORIGINS}" ] && echo "ALLOW_ORIGINS is required" && exit 1
+
+echo "Starting IPFS Gateway..."
+
 CONTAINER_NAME="$(curl -s --unix-socket /run/docker.sock "http://docker/containers/${HOSTNAME}/json" | jq -r .Name)"
-
 DOCKER_SCALE_NUM="$(echo "${CONTAINER_NAME}" | awk -F"_" '{print $NF}')"
-if [ "${DOCKER_SCALE_NUM}" = "${CONTAINER_NAME}" ]; then
-  DOCKER_SCALE_NUM="$(echo "${CONTAINER_NAME}" | awk -F"-" '{print $NF}')"
-fi
-if [ "${DOCKER_SCALE_NUM}" = "${CONTAINER_NAME}" ]; then
-  DOCKER_SCALE_NUM="1"
-fi
-
+[ "${DOCKER_SCALE_NUM}" = "${CONTAINER_NAME}" ] && DOCKER_SCALE_NUM="$(echo "${CONTAINER_NAME}" | awk -F"-" '{print $NF}')"
+[ "${DOCKER_SCALE_NUM}" = "${CONTAINER_NAME}" ] && DOCKER_SCALE_NUM="1"
 IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM}"
 
 mkdir -p "${IPFS_DIR}"
 ln -s "${IPFS_DIR}" /root/.ipfs >/dev/null 2>&1
 
-ALLOW_ORIGINS="${ALLOW_ORIGINS:?ALLOW_ORIGINS is required}"
-
-[ -z "${ALLOW_ORIGINS}" ] && echo "ALLOW_ORIGINS is required" && exit 1
-
-echo "Starting IPFS Gateway..."
 ipfs init
 
 ipfs config Swarm.ConnMgr.Type "none"
