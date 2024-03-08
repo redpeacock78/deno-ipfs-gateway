@@ -1,7 +1,16 @@
 #!/bin/sh
 
-DOCKER_SCALE_NUM="$(curl -s --unix-socket /run/docker.sock "http://docker/containers/${HOSTNAME}/json" | jq -r .Name | cut -d _ -f 3)"
-IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM:-1}"
+CONTAINER_NAME="$(curl -s --unix-socket /run/docker.sock "http://docker/containers/${HOSTNAME}/json" | jq -r .Name)"
+
+DOCKER_SCALE_NUM="$(echo "${CONTAINER_NAME}" | awk -F"_" '{print $NF}')"
+if [ "${DOCKER_SCALE_NUM}" = "${CONTAINER_NAME}" ]; then
+  DOCKER_SCALE_NUM="$(echo "${CONTAINER_NAME}" | awk -F"-" '{print $NF}')"
+fi
+if [ "${DOCKER_SCALE_NUM}" = "${CONTAINER_NAME}" ]; then
+  DOCKER_SCALE_NUM="1"
+fi
+
+IPFS_DIR="/ipfs/${DOCKER_SCALE_NUM}"
 
 mkdir -p "${IPFS_DIR}"
 ln -s "${IPFS_DIR}" /root/.ipfs >/dev/null 2>&1
