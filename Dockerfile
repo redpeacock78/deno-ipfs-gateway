@@ -33,7 +33,7 @@ COPY ./entrypoint.sh /app/
 
 RUN mkdir /lib64 && \
   ln -s /usr/local/lib/ld-linux-* /lib64/ && \
-  apk add --no-cache curl jq && \
+  apk add --no-cache bash curl jq && \
   chmod +x /app/entrypoint.sh
 
 ENV LD_LIBRARY_PATH="/usr/local/lib"
