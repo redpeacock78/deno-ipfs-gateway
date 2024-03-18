@@ -20,7 +20,7 @@ tasks:
     cmd: docker-compose down --remove-orphans
     desc: Service Down
   rm-exited:
-    cmd: docker rm $(docker ps -q --filter status=exited)
+    cmd: docker rm $(docker ps -q --filter "status=exited")
     desc: Remove exited containers
   rm-dangling:
     cmd: docker rmi $(docker images -a --filter "dangling=true" -q)
