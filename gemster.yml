@@ -19,8 +19,11 @@ tasks:
   down:
     cmd: docker-compose down --remove-orphans
     desc: Service Down
+  rm-dangling:
+    cmd: docker rmi $(docker images -a --filter "dangling=true" -q)
+    desc: Remove dangling images
   update:
-    cmd: docker-compose pull && docker-compose down && docker-compose up -d --scale ${TARGET}=${NUM}
+    cmd: docker-compose pull && docker-compose up -d --scale ${TARGET}=${NUM} && gemster rm-dangling
     desc: Service Update
     env:
       COMPOSE_PROFILES: main,monitor
