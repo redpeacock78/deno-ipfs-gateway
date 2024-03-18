@@ -19,11 +19,14 @@ tasks:
   down:
     cmd: docker-compose down --remove-orphans
     desc: Service Down
+  rm-exited:
+    cmd: docker rm $(docker ps -q --filter status=exited)
+    desc: Remove exited containers
   rm-dangling:
     cmd: docker rmi $(docker images -a --filter "dangling=true" -q)
     desc: Remove dangling images
   update:
-    cmd: docker-compose pull && docker-compose up -d --scale ${TARGET}=${NUM} && gemster rm-dangling
+    cmd: docker-compose pull && docker-compose up -d --scale ${TARGET}=${NUM} && gemster rm-exited && gemster rm-dangling
     desc: Service Update
     env:
       COMPOSE_PROFILES: main,monitor
