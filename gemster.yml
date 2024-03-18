@@ -19,6 +19,13 @@ tasks:
   down:
     cmd: docker-compose down --remove-orphans
     desc: Service Down
+  update:
+    cmd: docker-compose pull | grep "Downloaded newer image" && docker-compose down --remove-orphans && docker-compose up -d --scale ${TARGET}=${NUM}
+    desc: Service Update
+    env:
+      COMPOSE_PROFILES: main,monitor
+      TARGET: ipfs
+      NUM: 5
   ps:
     cmd: docker-compose ps
     desc: List Service containers
