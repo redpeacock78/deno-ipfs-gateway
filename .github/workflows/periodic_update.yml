@@ -1,0 +1,46 @@
+name: Periodic Update
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            repo="${HOME}/$(basename $(echo ${{ github.event.repository.url }}))"
+            if [[ -e ${repo} ]]; then
+              cd ${repo}
+            else
+              cd ${HOME} && \
+              git clone ${{ github.event.repository.url }} && \
+              cd ${repo}
+            fi
+            if type gemster > /dev/null 2>&1; then
+              gemster update
+            else
+              docker-compose pull && \
+              DOCKER_BUILDKIT=1 \
+              COMPOSE_DOCKER_CLI_BUILD=1 \
+              COMPOSE_PROFILES=main,monitor \
+              docker-compose up -d --scale ipfs=5 && \
+              docker rm $(docker ps -q --filter "status=exited") && \
+              docker rmi $(docker images -a --filter "dangling=true" -q)
+            fi
+      - name: Notification
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          username: Github Actions
+          avatar_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
