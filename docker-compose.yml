@@ -43,6 +43,8 @@ services:
     volumes:
       - ./conf:/etc/nginx/conf.d
       - ./.nginx:/var/cache/nginx
+    dns_search:
+      - deno-ipfs-gateway
     labels:
       - "autoheal=true"
     profiles:
