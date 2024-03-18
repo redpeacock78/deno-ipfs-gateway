@@ -49,6 +49,12 @@ tasks:
     desc: Show connecting IPFS peers count
     env:
       NUM: 5
+  repo-stat:
+    cmd: |
+      seq 1 ${NUM} | xargs -I@ docker-compose exec -T --index=@ ipfs sh -c 'echo "IPFS Node: @" && ipfs repo stat -H && echo ""' | sed '$d'
+    desc: Provides information about the local set of stored objects
+    env:
+      NUM: 5
   contents-size:
     cmd: seq 1 ${NUM} | xargs -P${NUM} -I@ docker-compose exec -T --index=@ ipfs sh -c 'du -b /ipfs/@ | tac | head -n1' | awk '{s+=$1}END{print s}' | numfmt --to=si --suffix=B
     desc: Show IPFS contents total cache size
