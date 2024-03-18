@@ -3,7 +3,7 @@ FROM gcr.io/distroless/cc AS cc
 FROM alpine:latest AS kubo
 
 ARG TARGETARCH
-ARG version="v0.26.0"
+ARG version="v0.27.0"
 
 WORKDIR /app
 
