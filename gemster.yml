@@ -26,7 +26,7 @@ tasks:
     cmd: '[ -n "$(docker images -a --filter "dangling=true" -q)" ] && docker rmi $(docker images -a --filter "dangling=true" -q) || :'
     desc: Remove dangling images
   update:
-    cmd: docker-compose pull && docker-compose up -d --scale ${TARGET}=${NUM} && gemster rm-exited && gemster rm-dangling
+    cmd: docker-compose pull && gemster up && gemster rm-exited && gemster rm-dangling
     desc: Service Update
     env:
       COMPOSE_PROFILES: main,monitor
