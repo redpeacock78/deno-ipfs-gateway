@@ -26,8 +26,10 @@ jobs:
               cd ${repo}
             fi
             if type gemster > /dev/null 2>&1; then
+              gemster down || :
               gemster update
             else
+              docker-compose down --remove-orphans || :
               docker-compose pull && \
               DOCKER_BUILDKIT=1 \
               COMPOSE_DOCKER_CLI_BUILD=1 \
