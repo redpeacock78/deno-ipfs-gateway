@@ -28,10 +28,12 @@ jobs:
               cd ${repo}
             fi
             if type gemster > /dev/null 2>&1; then
+              gemster down || :
               gemster build-up && \
               gemster reload && \
               yes | docker builder prune
             else
+              docker-compose down --remove-orphans || :
               DOCKER_BUILDKIT=1 \
               COMPOSE_DOCKER_CLI_BUILD=1 \
               COMPOSE_PROFILES=main,monitor \
